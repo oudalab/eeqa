@@ -745,9 +745,14 @@ def one_fold(fold, output_dir, heads_only=True, real_entities_only=True, include
             text_path = path.join(doc_path, doc_key + ".sgm")
             document = Document(annotation_path, text_path, doc_key, fold, heads_only,
                                 real_entities_only, include_pronouns)
+            # import pdb
+            # pdb.set_trace()
             js = document.to_json()
-            g.write(json.dumps(js, default=int, indent = 4) + "\n")
-
+            #g.write(json.dumps(js, default=int, indent = 4) + "\n")
+            #q.write(js + "\n")
+            #json.dump(js, g)
+            g.write(json.dumps(js, default=int))
+            g.write('\n')
 
 def main():
     parser = argparse.ArgumentParser(description="Preprocess ACE event data.")

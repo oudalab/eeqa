@@ -59,7 +59,9 @@ class trigger_category_vocab(object):
             with open(file) as f:
                 for line in f:
                     example = json.loads(line)
-                    events, sentence = example["event"], example["sentence"] 
+                    # import pdb
+                    # pdb.set_trace()
+                    events, sentence = example["event"], example["sentence"]
                     if len(sentence) > self.max_sent_length: self.max_sent_length = len(sentence)
                     for event in events:
                         event_type = event[0][1]
