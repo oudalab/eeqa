@@ -30,7 +30,7 @@ from pytorch_pretrained_bert.tokenization import (BasicTokenizer,
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
                     datefmt='%m/%d/%Y %H:%M:%S',
-                    level=logging.INFO)
+                    level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 candidate_queries = [
@@ -335,6 +335,8 @@ def evaluate(args, eval_examples, category_vocab, model, device, eval_dataloader
 
 
 def main(args):
+    #import os
+    #os.environ['CUDA_VISIBLE_DEVICES']='1,2'
     device = torch.device("cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu")
     n_gpu = torch.cuda.device_count()
     logger.info("device: {}, n_gpu: {}, 16-bits training: {}".format(
@@ -476,6 +478,7 @@ def main(args):
                 if args.train_mode == 'random' or args.train_mode == 'random_sorted':
                     random.shuffle(train_batches)
                 for step, batch in enumerate(train_batches):
+                    logger.info("Step {} of Epoch {}".format(step, epoch))
                     if n_gpu == 1:
                         batch = tuple(t.to(device) for t in batch)
                     input_ids, segment_ids, input_mask, labels = batch
@@ -539,6 +542,7 @@ def main(args):
                                     for key in best_result:
                                         writer.write("%s = %s\n" % (key, str(best_result[key])))
 
+            logger("Epoch finshed...")
             del model
 
     if args.do_eval:
